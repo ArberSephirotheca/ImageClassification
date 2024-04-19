@@ -12,9 +12,8 @@ class Pipe : public ApplicationBase {
   Pipe(AppParams param) : ApplicationBase() {
     params_ = param;
   }
+  void run();
 
-
-  
   void result();
 
   void allocate(std::string file_path);
@@ -305,6 +304,10 @@ void Pipe::result() {
         default: std::cout << "Unknown"; break;
     }
     std::cout << std::endl;
+}
+
+void Pipe::run(){
+    // todo: execute the kernels
 }
 
 Pipe::~Pipe() {
