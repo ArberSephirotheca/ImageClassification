@@ -4,11 +4,11 @@
 class ApplicationBase{
     public:
         virtual ~ApplicationBase() {
-            vkDestroyPipelineCache(singleton.device, pipelineCache, nullptr);
+            // vkDestroyPipelineCache(singleton.device, pipelineCache, nullptr);
             vkDestroyCommandPool(singleton.device, commandPool, nullptr);
-            vkDestroyFence(singleton.device, fence, nullptr);
-            vkDestroyDescriptorPool(singleton.device, descriptorPool, nullptr);
-            vkDestroyPipelineLayout(singleton.device, pipelineLayout, nullptr);
+            // vkDestroyFence(singleton.device, fence, nullptr);
+            // vkDestroyDescriptorPool(singleton.device, descriptorPool, nullptr);
+            // vkDestroyPipelineLayout(singleton.device, pipelineLayout, nullptr);
         }
 
 
