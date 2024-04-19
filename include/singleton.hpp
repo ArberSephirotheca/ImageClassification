@@ -129,7 +129,7 @@ class Singleton{
 				queueFamilyIndex = i;
 				queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
 				queueCreateInfo.queueFamilyIndex = i;
-				queueCreateInfo.queueCount = 2;
+				queueCreateInfo.queueCount = 1;
 				queueCreateInfo.pQueuePriorities = &defaultQueuePriority;
 				break;
 			}
