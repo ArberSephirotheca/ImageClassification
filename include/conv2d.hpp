@@ -1,6 +1,7 @@
 
 #pragma once
 #include "application.hpp"
+#include "app_params.hpp"
 
 
 class Conv2d : public ApplicationBase {
@@ -9,16 +10,7 @@ class Conv2d : public ApplicationBase {
     ~Conv2d() {};
     void        submit(const int queue_idx);
 	void 		 cleanup(VkPipeline *cov2d_pipeline);
-    void compute_constant(int weight_input_channels,
-	int weight_height,
-    int weight_width,
-    int input_height,
-    int input_width,
-	int bias_number_of_elements,
-    int kernel_size,
-    int stride,
-    int padding,
-	bool relu);
+    void compute_constant(AppParams params);
 
 	void run(const int logical_block,
 	const int queue_idx,
@@ -71,27 +63,17 @@ void Conv2d::cleanup(VkPipeline *pipeline) {
 		vkDestroyShaderModule(singleton.device, shaderModule, nullptr);
 }
 
-void Conv2d::compute_constant(
-    int weight_input_channels,
-	int weight_height,
-    int weight_width,
-    int input_height,
-    int input_width,
-	int bias_number_of_elements,
-    int kernel_size,
-    int stride,
-    int padding,
-	bool relu){
-    conv2d_push_constant.weight_input_channels = weight_input_channels;
-	conv2d_push_constant.weight_height = weight_height;
-	conv2d_push_constant.weight_width = weight_width;
-    conv2d_push_constant.input_height = input_height;
-    conv2d_push_constant.input_width = input_width;
-	conv2d_push_constant.bias_number_of_elements = bias_number_of_elements;
-    conv2d_push_constant.kernel_size = kernel_size;
-    conv2d_push_constant.stride = stride;
-    conv2d_push_constant.padding = padding;
-	conv2d_push_constant.relu = relu;
+void Conv2d::compute_constant( AppParams params){
+    conv2d_push_constant.weight_input_channels = params.weight_input_channels;
+	conv2d_push_constant.weight_height = params.weight_height;
+	conv2d_push_constant.weight_width = params.weight_width;
+    conv2d_push_constant.input_height = params.input_height;
+    conv2d_push_constant.input_width = params.input_width;
+	conv2d_push_constant.bias_number_of_elements = params.bias_number_of_elements;
+    conv2d_push_constant.kernel_size = params.kernel_size;
+    conv2d_push_constant.stride = params.stride;
+    conv2d_push_constant.padding = params.padding;
+	conv2d_push_constant.relu = params.relu;
     }
 
 void Conv2d::run(const int logical_block,

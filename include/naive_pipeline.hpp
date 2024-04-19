@@ -307,7 +307,11 @@ void Pipe::result() {
 }
 
 void Pipe::run(){
-    // todo: execute the kernels
+    // --- Convolution 1 ---
+    Conv2d conv1 = Conv2d();
+    conv1.compute_constant(params_);
+    conv1.run(1, 0, image_data, weight_data, bias_data, conv_output_data, params_.weight_output_channels, image_data_buffer, weight_data_buffer, bias_data_buffer, conv_output_data_buffer, 1);
+    // todo: do other works
 }
 
 Pipe::~Pipe() {
