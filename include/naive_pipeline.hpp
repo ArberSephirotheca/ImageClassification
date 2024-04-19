@@ -181,51 +181,51 @@ void Pipe::allocate(std::string file_path) {
 
     create_shared_empty_storage_buffer(weight_data_size*sizeof(float), &weight_data_buffer, &weight_data_memory, &mapped);
     weight_data = static_cast< float*>(mapped);
-    readDataFromFile("data/features_0_weight.txt", weight_data, weight_data_size);
+    readDataFromFile("../../../../data/features_0_weight.txt", weight_data, weight_data_size);
 
     create_shared_empty_storage_buffer(bias_data_size*sizeof(float), &bias_data_buffer, &bias_data_memory, &mapped);
     bias_data = static_cast< float*>(mapped);
-    readDataFromFile("data/features_0_bias.txt", bias_data, bias_data_size);
+    readDataFromFile("../../../../data/features_0_bias.txt", bias_data, bias_data_size);
 
     create_shared_empty_storage_buffer(second_weight_data_size*sizeof(float), &second_weight_data_buffer, &second_weight_data_memory, &mapped);
     second_weight_data = static_cast< float*>(mapped);
-    readDataFromFile("data/features_3_weight.txt", second_weight_data, second_weight_data_size);
+    readDataFromFile("../../../../data/features_3_weight.txt", second_weight_data, second_weight_data_size);
 
     create_shared_empty_storage_buffer(second_bias_data_size*sizeof(float), &second_bias_data_buffer, &second_bias_data_memory, &mapped);
     second_bias_data = static_cast< float*>(mapped);
-    readDataFromFile("data/features_3_bias.txt", second_bias_data, second_bias_data_size);
+    readDataFromFile("../../../../data/features_3_bias.txt", second_bias_data, second_bias_data_size);
 
     create_shared_empty_storage_buffer(third_weight_data_size*sizeof(float), &third_weight_data_buffer, &third_weight_data_memory, &mapped);
     third_weight_data = static_cast< float*>(mapped);
-    readDataFromFile("data/features_6_weight.txt", third_weight_data, third_weight_data_size);
+    readDataFromFile("../../../../data/features_6_weight.txt", third_weight_data, third_weight_data_size);
 
     create_shared_empty_storage_buffer(third_bias_data_size*sizeof(float), &third_bias_data_buffer, &third_bias_data_memory, &mapped);
     third_bias_data = static_cast< float*>(mapped);
-    readDataFromFile("data/features_6_bias.txt", third_bias_data, third_bias_data_size);
+    readDataFromFile("../../../../data/features_6_bias.txt", third_bias_data, third_bias_data_size);
 
     create_shared_empty_storage_buffer(fourth_weight_data_size*sizeof(float), &fourth_weight_data_buffer, &fourth_weight_data_memory, &mapped);
     fourth_weight_data = static_cast< float*>(mapped);
-    readDataFromFile("data/features_8_weight.txt", fourth_weight_data, fourth_weight_data_size);
+    readDataFromFile("../../../../data/features_8_weight.txt", fourth_weight_data, fourth_weight_data_size);
 
     create_shared_empty_storage_buffer(fourth_bias_data_size*sizeof(float), &fourth_bias_data_buffer, &fourth_bias_data_memory, &mapped);
     fourth_bias_data = static_cast< float*>(mapped);
-    readDataFromFile("data/features_8_bias.txt", fourth_bias_data, fourth_bias_data_size);
+    readDataFromFile("../../../../data/features_8_bias.txt", fourth_bias_data, fourth_bias_data_size);
 
     create_shared_empty_storage_buffer(fifth_weight_data_size*sizeof(float), &fifth_weight_data_buffer, &fifth_weight_data_memory, &mapped);
     fifth_weight_data = static_cast< float*>(mapped);
-    readDataFromFile("data/features_10_weight.txt", fifth_weight_data, fifth_weight_data_size);
+    readDataFromFile("../../../../data/features_10_weight.txt", fifth_weight_data, fifth_weight_data_size);
 
     create_shared_empty_storage_buffer(fifth_bias_data_size*sizeof(float), &fifth_bias_data_buffer, &fifth_bias_data_memory, &mapped);
     fifth_bias_data = static_cast< float*>(mapped);
-    readDataFromFile("data/features_10_bias.txt", fifth_bias_data, fifth_bias_data_size);
+    readDataFromFile("../../../../data/features_10_bias.txt", fifth_bias_data, fifth_bias_data_size);
 
     create_shared_empty_storage_buffer(linear_weight_size*sizeof(float), &linear_weight_data_buffer, &linear_weight_data_memory, &mapped);
     linear_weight_data = static_cast< float*>(mapped);
-    readDataFromFile("data/classifier_weight.txt", linear_weight_data, linear_weight_size);
+    readDataFromFile("../../../../data/classifier_weight.txt", linear_weight_data, linear_weight_size);
 
     create_shared_empty_storage_buffer(linear_bias_size*sizeof(float), &linear_bias_data_buffer, &linear_bias_data_memory, &mapped);
     linear_bias_data = static_cast< float*>(mapped);
-    readDataFromFile("data/classifier_bias.txt", linear_bias_data, linear_bias_size);
+    readDataFromFile("../../../../data/classifier_bias.txt", linear_bias_data, linear_bias_size);
 
     create_shared_empty_storage_buffer(params_.weight_output_channels * conv_output_height * conv_output_width * sizeof(float), &conv_output_data_buffer, &conv_output_data_memory, &mapped);
     conv_output_data = static_cast< float*>(mapped);
@@ -307,10 +307,16 @@ void Pipe::result() {
 }
 
 void Pipe::run(){
-    // --- Convolution 1 ---
-    Conv2d conv1 = Conv2d();
-    conv1.compute_constant(params_);
-    conv1.run(1, 0, image_data, weight_data, bias_data, conv_output_data, params_.weight_output_channels, image_data_buffer, weight_data_buffer, bias_data_buffer, conv_output_data_buffer, 1);
+    int conv_output_height = (params_.input_height + 2 * params_.padding - params_.kernel_size) / params_.stride + 1;
+    int conv_output_width = (params_.input_width + 2 * params_.padding - params_.kernel_size) / params_.stride + 1;
+    // // --- Convolution 1 ---
+    // Conv2d conv1 = Conv2d();
+    // conv1.compute_constant(params_);
+    // conv1.run(1, 0, image_data, weight_data, bias_data, conv_output_data, params_.weight_output_channels, image_data_buffer, weight_data_buffer, bias_data_buffer, conv_output_data_buffer, 1);
+    // --- Maxpool 1 ---
+    Maxpool2d maxpool1 = Maxpool2d();
+    maxpool1.compute_constant(params_.weight_output_channels, conv_output_height, conv_output_width, params_.pool_size, params_.pool_stride);
+    maxpool1.run(1, 0, conv_output_data, maxpool_output_data, conv_output_data_buffer, maxpool_output_data_buffer, 1);
     // todo: do other works
 }
 

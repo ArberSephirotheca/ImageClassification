@@ -10,5 +10,6 @@ int main(int argc, char** argv) {
     AppParams params;
     Pipe pipe(params);
     pipe.allocate(filePath);
+    pipe.run();
     
 }

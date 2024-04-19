@@ -1,4 +1,5 @@
 /.vscode
-/shaders
+shaders/compiled_shaders
 /build
 /.xmake
+*.txt

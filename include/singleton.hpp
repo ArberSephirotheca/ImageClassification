@@ -129,7 +129,7 @@ class Singleton{
 				queueFamilyIndex = i;
 				queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
 				queueCreateInfo.queueFamilyIndex = i;
-				queueCreateInfo.queueCount = 4;
+				queueCreateInfo.queueCount = 2;
 				queueCreateInfo.pQueuePriorities = &defaultQueuePriority;
 				break;
 			}
@@ -166,9 +166,9 @@ class Singleton{
 
 		// Get a compute queue
 		vkGetDeviceQueue(device, queueFamilyIndex, 0, &queues[0]);
-		vkGetDeviceQueue(device, queueFamilyIndex, 1, &queues[1]);
-		vkGetDeviceQueue(device, queueFamilyIndex, 2, &queues[2]);
-		vkGetDeviceQueue(device, queueFamilyIndex, 3, &queues[3]);
+		// vkGetDeviceQueue(device, queueFamilyIndex, 1, &queues[1]);
+		// vkGetDeviceQueue(device, queueFamilyIndex, 2, &queues[2]);
+		// vkGetDeviceQueue(device, queueFamilyIndex, 3, &queues[3]);
 	}
 
 
